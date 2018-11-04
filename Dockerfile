@@ -12,7 +12,7 @@ RUN set -ex; \
 	; \
 	\
 	docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr; \
-	docker-php-ext-install gd mysqli opcache zip; \
+	docker-php-ext-install gd mysqli opcache zip zlib1g-dev; \
 	\
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
 	apt-mark auto '.*' > /dev/null; \
@@ -45,11 +45,6 @@ VOLUME /var/www/html
 
 ENV WORDPRESS_VERSION 4.9.8
 ENV WORDPRESS_SHA1 0945bab959cba127531dceb2c4fed81770812b4f
-
-RUN apt-get update \
-    && apt-get install zip unzip zlib1g-dev -y \
-    && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-install zip
 
 RUN set -ex; \
 	curl -o wordpress.tar.gz -fSL "https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz"; \
